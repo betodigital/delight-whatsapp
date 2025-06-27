@@ -1,0 +1,83 @@
+# Copyright (C) 2024 Roberto Grozinski
+# This file is distributed under the same license as the Delight WhatsApp plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Delight WhatsApp 1.0.5\n"
+"Report-Msgid-Bugs-To: roberto.grozinski@gmail.com\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2024-01-01T00:00:00+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.8.1\n"
+"X-Domain: delight-whatsapp\n"
+
+#: admin/class-delight-whatsapp-admin.php:65
+msgid "Configurações do Delight WhatsApp"
+msgstr ""
+
+#: admin/class-delight-whatsapp-admin.php:78
+msgid "Número do WhatsApp"
+msgstr ""
+
+#: admin/class-delight-whatsapp-admin.php:79
+msgid "Posição Horizontal do Ícone"
+msgstr ""
+
+#: admin/class-delight-whatsapp-admin.php:80
+msgid "Posição Vertical do Ícone"
+msgstr ""
+
+#: admin/class-delight-whatsapp-admin.php:81
+msgid "ID do Google Tag Manager"
+msgstr ""
+
+#: admin/class-delight-whatsapp-admin.php:82
+msgid "ID do Google Analytics"
+msgstr ""
+
+#: admin/class-delight-whatsapp-admin.php:83
+msgid "Habilitar Mensagem de Saudação"
+msgstr ""
+
+#: admin/class-delight-whatsapp-admin.php:84
+msgid "Mensagem de Saudação"
+msgstr ""
+
+#: admin/class-delight-whatsapp-admin.php:100
+msgid "Configure as opções do ícone flutuante do WhatsApp."
+msgstr ""
+
+#: admin/class-delight-whatsapp-admin.php:109
+msgid "Digite o número no formato: 55(11)99999-9999"
+msgstr ""
+
+#: admin/class-delight-whatsapp-admin.php:119
+msgid "Esquerda"
+msgstr ""
+
+#: admin/class-delight-whatsapp-admin.php:120
+msgid "Direita"
+msgstr ""
+
+#: admin/class-delight-whatsapp-admin.php:130
+msgid "Digite a distância em pixels do ícone em relação à parte inferior da tela (0-100)"
+msgstr ""
+
+#: admin/class-delight-whatsapp-admin.php:140
+msgid "Digite o ID do GTM (ex: GTM-XXXXXXX)"
+msgstr ""
+
+#: admin/class-delight-whatsapp-admin.php:150
+msgid "Digite o ID do GA (ex: UA-XXXXXXXXX-X ou G-XXXXXXXXXX)"
+msgstr ""
+
+#: admin/class-delight-whatsapp-admin.php:160
+msgid "Marque para exibir uma mensagem de saudação quando o botão do WhatsApp aparecer"
+msgstr ""
+
+#: admin/class-delight-whatsapp-admin.php:170
+msgid "Digite a mensagem de saudação que será exibida"
+msgstr ""

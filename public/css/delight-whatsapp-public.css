@@ -1,3 +1,10 @@
+/**
+ * Estilos do frontend
+ *
+ * @package Delight_WhatsApp
+ * @subpackage Delight_WhatsApp/public/css
+ */
+
 .delight-whatsapp-container {
     position: fixed;
     z-index: 9999;
@@ -6,6 +13,7 @@
 
 .delight-whatsapp {
     display: block;
+    text-decoration: none;
 }
 
 .delight-whatsapp img {
@@ -13,18 +21,59 @@
     height: 60px;
     border-radius: 50%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
 }
 
-.delight-whatsapp:hover {
+.delight-whatsapp:hover img {
     transform: scale(1.1);
 }
 
 .delight-whatsapp-greeting {
     background-color: #25D366;
     color: white;
-    padding: 10px;
-    border-radius: 5px;
+    padding: 10px 15px;
+    border-radius: 20px;
     margin-bottom: 10px;
     font-size: 14px;
     max-width: 200px;
+    position: relative;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    animation: fadeInUp 0.5s ease;
+}
+
+.delight-whatsapp-greeting::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 20px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #25D366;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .delight-whatsapp img {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .delight-whatsapp-greeting {
+        font-size: 12px;
+        max-width: 150px;
+        padding: 8px 12px;
+    }
 }
