@@ -2,8 +2,8 @@
 /**
  * Plugin Name: Delight WhatsApp
  * Plugin URI: https://www.robertogrozinski.com/delight-whatsapp
- * Description: Adiciona um ícone flutuante do WhatsApp no rodapé do site com opções de GTM, GA e mensagem de saudação.
- * Version: 1.0.5
+ * Description: Adiciona um ícone flutuante do WhatsApp no rodapé do site com opções avançadas de GTM, GA, analytics, escaneamento automático e mensagem de saudação.
+ * Version: 2.0.0
  * Author: Roberto Grozinski
  * Author URI: https://www.robertogrozinski.com
  * License: GPL-2.0+
@@ -20,7 +20,7 @@ if (!defined('WPINC')) {
     die;
 }
 
-define('DELIGHT_WHATSAPP_VERSION', '1.0.5');
+define('DELIGHT_WHATSAPP_VERSION', '2.0.0');
 define('DELIGHT_WHATSAPP_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('DELIGHT_WHATSAPP_PLUGIN_URL', plugin_dir_url(__FILE__));
 

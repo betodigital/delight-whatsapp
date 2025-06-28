@@ -14,7 +14,29 @@
         $('.delight-whatsapp').on('click', function(e) {
             e.preventDefault();
             
-            var url = $(this).data('whatsapp-url');
+            var $this = $(this);
+            var url = $this.data('whatsapp-url');
+            var phone = $this.data('phone');
+            
+            // Preparar dados para tracking
+            var trackingData = {
+                action: 'delight_whatsapp_track_click',
+                nonce: delightWhatsApp.nonce,
+                page_url: window.location.href,
+                page_title: document.title,
+                utm_params: {}
+            };
+            
+            // Adicionar parâmetros UTM se o tracking estiver habilitado
+            if (delightWhatsApp.utmTracking == '1') {
+                var storedUtm = sessionStorage.getItem('delight_utm_params');
+                if (storedUtm) {
+                    trackingData.utm_params = JSON.parse(storedUtm);
+                }
+            }
+            
+            // Registrar clique via AJAX
+            $.post(delightWhatsApp.ajaxurl, trackingData);
             
             // Log para análises
             console.log('WhatsApp button clicked');
@@ -30,16 +52,36 @@
             
             // Enviar evento para Google Tag Manager se disponível
             if (typeof dataLayer !== 'undefined') {
-                dataLayer.push({
+                var eventData = {
                     'event': 'whatsapp_click',
                     'event_category': 'WhatsApp',
                     'event_action': 'click',
-                    'event_label': 'Floating Button'
-                });
+                    'event_label': 'Floating Button',
+                    'page_url': window.location.href,
+                    'page_title': document.title
+                };
+                
+                // Adicionar UTM params se disponíveis
+                if (delightWhatsApp.utmTracking == '1') {
+                    var storedUtm = sessionStorage.getItem('delight_utm_params');
+                    if (storedUtm) {
+                        var utmParams = JSON.parse(storedUtm);
+                        Object.assign(eventData, utmParams);
+                    }
+                }
+                
+                dataLayer.push(eventData);
+            }
+            
+            // Preparar URL do WhatsApp com informações da página se habilitado
+            var finalUrl = url;
+            if (delightWhatsApp.autoPageInfo == '1' && url.indexOf('?text=') === -1) {
+                var message = encodeURIComponent('Olá! Estou na página "' + document.title + '" (' + window.location.href + ') e gostaria de mais detalhes.');
+                finalUrl += (url.indexOf('?') > -1 ? '&' : '?') + 'text=' + message;
             }
             
             // Abrir WhatsApp
-            window.open(url, '_blank');
+            window.open(finalUrl, '_blank');
         });
 
         // Animação da mensagem de saudação

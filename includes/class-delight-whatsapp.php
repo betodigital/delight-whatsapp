@@ -33,6 +33,7 @@ class Delight_WhatsApp {
         $this->load_dependencies();
         $this->define_admin_hooks();
         $this->define_public_hooks();
+        $this->define_ajax_hooks();
     }
 
     /**
@@ -49,7 +50,8 @@ class Delight_WhatsApp {
      * Carrega as dependências necessárias
      */
     private function load_dependencies() {
-        // Carregar classes necessárias
+        require_once DELIGHT_WHATSAPP_PLUGIN_DIR . 'includes/class-delight-whatsapp-scanner.php';
+        require_once DELIGHT_WHATSAPP_PLUGIN_DIR . 'includes/class-delight-whatsapp-analytics.php';
     }
 
     /**
@@ -73,8 +75,19 @@ class Delight_WhatsApp {
         add_action('wp_head', array($plugin_public, 'add_gtm_head'));
         add_action('wp_body_open', array($plugin_public, 'add_gtm_body'));
         add_action('wp_head', array($plugin_public, 'add_ga'));
+        add_action('wp_head', array($plugin_public, 'add_utm_script'));
         add_action('wp_footer', array($plugin_public, 'add_button'));
-        add_action('wp_footer', array($plugin_public, 'add_script'));
+    }
+
+    /**
+     * Define os hooks AJAX
+     */
+    private function define_ajax_hooks() {
+        $plugin_admin = new Delight_WhatsApp_Admin($this->get_plugin_name(), $this->get_version());
+        
+        add_action('wp_ajax_delight_whatsapp_auto_scan', array($plugin_admin, 'handle_auto_scan'));
+        add_action('wp_ajax_delight_whatsapp_track_click', array('Delight_WhatsApp_Analytics', 'handle_click_tracking'));
+        add_action('wp_ajax_nopriv_delight_whatsapp_track_click', array('Delight_WhatsApp_Analytics', 'handle_click_tracking'));
     }
 
     /**
@@ -109,6 +122,12 @@ class Delight_WhatsApp {
         add_option('delight_whatsapp_ga_id', '');
         add_option('delight_whatsapp_greeting_enabled', '0');
         add_option('delight_whatsapp_greeting_message', 'Olá! Como posso ajudar?');
+        add_option('delight_whatsapp_auto_page_info', '0');
+        add_option('delight_whatsapp_utm_tracking', '0');
+        add_option('delight_whatsapp_auto_scan_enabled', '0');
+
+        // Criar tabela de analytics
+        Delight_WhatsApp_Analytics::create_analytics_table();
     }
 
     /**
@@ -122,6 +141,12 @@ class Delight_WhatsApp {
         delete_option('delight_whatsapp_ga_id');
         delete_option('delight_whatsapp_greeting_enabled');
         delete_option('delight_whatsapp_greeting_message');
+        delete_option('delight_whatsapp_auto_page_info');
+        delete_option('delight_whatsapp_utm_tracking');
+        delete_option('delight_whatsapp_auto_scan_enabled');
+
+        // Remover tabela de analytics
+        Delight_WhatsApp_Analytics::drop_analytics_table();
     }
 
     /**

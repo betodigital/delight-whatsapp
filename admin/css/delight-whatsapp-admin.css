@@ -1,0 +1,75 @@
+/**
+ * Estilos do admin
+ *
+ * @package Delight_WhatsApp
+ * @subpackage Delight_WhatsApp/admin/css
+ */
+
+.delight-dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.delight-card {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+.delight-card h3 {
+    margin: 0 0 10px 0;
+    color: #23282d;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.delight-stat-number {
+    font-size: 32px;
+    font-weight: bold;
+    color: #25D366;
+    margin: 10px 0;
+}
+
+.delight-chart-container {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+
+.delight-chart-container h3 {
+    margin: 0 0 20px 0;
+    color: #23282d;
+}
+
+#auto-scan-btn {
+    background: #25D366;
+    border-color: #25D366;
+    color: #fff;
+}
+
+#auto-scan-btn:hover {
+    background: #128C7E;
+    border-color: #128C7E;
+}
+
+#auto-scan-btn:disabled {
+    background: #ccc;
+    border-color: #ccc;
+    cursor: not-allowed;
+}
+
+.form-table th {
+    width: 200px;
+}
+
+.regular-text {
+    width: 25em;
+}

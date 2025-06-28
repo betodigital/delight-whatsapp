@@ -45,6 +45,17 @@ class Delight_WhatsApp_Public {
             $this->version,
             true
         );
+
+        // Localizar script com dados necessários
+        wp_localize_script($this->plugin_name, 'delightWhatsApp', array(
+            'ajaxurl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('delight_whatsapp_click'),
+            'autoPageInfo' => get_option('delight_whatsapp_auto_page_info', '0'),
+            'utmTracking' => get_option('delight_whatsapp_utm_tracking', '0'),
+            'pageTitle' => get_the_title(),
+            'pageUrl' => get_permalink(),
+            'homeUrl' => home_url()
+        ));
     }
 
     /**
@@ -108,10 +119,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         $vertical_position = get_option('delight_whatsapp_vertical_position', '20');
         $greeting_enabled = get_option('delight_whatsapp_greeting_enabled', '0');
         $greeting_message = get_option('delight_whatsapp_greeting_message', 'Olá! Como posso ajudar?');
+        $auto_page_info = get_option('delight_whatsapp_auto_page_info', '0');
         
         if (!empty($phone)) {
             $formatted_phone = preg_replace('/[^0-9]/', '', $phone);
+            
+            // Preparar mensagem automática se habilitada
+            $message = '';
+            if ($auto_page_info == '1') {
+                $page_title = get_the_title();
+                $page_url = get_permalink();
+                
+                if (is_front_page()) {
+                    $page_title = get_bloginfo('name');
+                    $page_url = home_url();
+                }
+                
+                $message = urlencode("Olá! Estou na página '{$page_title}' ({$page_url}) e gostaria de mais detalhes.");
+            }
+            
             $whatsapp_url = "https://wa.me/{$formatted_phone}";
+            if (!empty($message)) {
+                $whatsapp_url .= "?text={$message}";
+            }
             
             $style = $position . ': 20px; bottom: ' . esc_attr($vertical_position) . 'px;';
             
@@ -119,7 +149,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             if ($greeting_enabled == '1') {
                 echo '<div class="delight-whatsapp-greeting">' . esc_html($greeting_message) . '</div>';
             }
-            echo '<a href="' . esc_url($whatsapp_url) . '" class="delight-whatsapp" data-whatsapp-url="' . esc_url($whatsapp_url) . '">';
+            echo '<a href="' . esc_url($whatsapp_url) . '" class="delight-whatsapp" data-whatsapp-url="' . esc_url($whatsapp_url) . '" data-phone="' . esc_attr($formatted_phone) . '">';
             echo '<img src="' . DELIGHT_WHATSAPP_PLUGIN_URL . 'assets/whatsapp-icon.svg" alt="WhatsApp">';
             echo '</a>';
             echo '</div>';
@@ -127,22 +157,45 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     }
 
     /**
-     * Adiciona script para abrir WhatsApp
+     * Adiciona script para UTM tracking
      */
-    public function add_script() {
-        ?>
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var whatsappLink = document.querySelector('.delight-whatsapp');
-            if (whatsappLink) {
-                whatsappLink.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    var url = this.getAttribute('data-whatsapp-url');
-                    window.open(url, '_blank');
+    public function add_utm_script() {
+        $utm_tracking = get_option('delight_whatsapp_utm_tracking', '0');
+        if ($utm_tracking == '1') {
+            ?>
+            <script>
+            // Capturar e manter parâmetros UTM
+            (function() {
+                var urlParams = new URLSearchParams(window.location.search);
+                var utmParams = {};
+                var hasUtm = false;
+                
+                ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'].forEach(function(param) {
+                    if (urlParams.has(param)) {
+                        utmParams[param] = urlParams.get(param);
+                        hasUtm = true;
+                    }
                 });
-            }
-        });
-        </script>
-        <?php
+                
+                if (hasUtm) {
+                    // Armazenar UTM params na sessão
+                    sessionStorage.setItem('delight_utm_params', JSON.stringify(utmParams));
+                    
+                    // Enviar para GTM se disponível
+                    if (typeof dataLayer !== 'undefined') {
+                        dataLayer.push({
+                            'event': 'utm_capture',
+                            'utm_source': utmParams.utm_source || '',
+                            'utm_medium': utmParams.utm_medium || '',
+                            'utm_campaign': utmParams.utm_campaign || '',
+                            'utm_term': utmParams.utm_term || '',
+                            'utm_content': utmParams.utm_content || ''
+                        });
+                    }
+                }
+            })();
+            </script>
+            <?php
+        }
     }
 }
